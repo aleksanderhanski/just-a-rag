@@ -1,0 +1,14 @@
+data/*
+!data/.gitkeep
+
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+qdrant_storage/
+
+.env
+.DS_Store
