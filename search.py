@@ -12,11 +12,18 @@ from db import client, COLLECTION_NAME, MODEL_NAME
 # bge-base model needs query prefix
 QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
+_model = None
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = SentenceTransformer(MODEL_NAME)
+    return _model
+
 
 def search(query, limit=5):
-    model = SentenceTransformer(MODEL_NAME)
-    query_vector = model.encode(QUERY_PREFIX + query, normalize_embeddings=True).tolist()
-
+    query_vector = get_model().encode(QUERY_PREFIX + query, normalize_embeddings=True).tolist()
+    
     results = client.query_points(
         collection_name=COLLECTION_NAME,
         query=query_vector,
@@ -24,14 +31,18 @@ def search(query, limit=5):
         with_payload=True,
     )
 
+    return results.points
+
+
+def main():
+    query = " ".join(sys.argv[1:]) or "What is this document about?"
     print(f"\nResults for: {query!r}\n")
-    for rank, point in enumerate(results.points, 1):
+    for rank, point in enumerate(search(query), 1):
         p = point.payload
         snippet = p["text"][:160].replace("\n", " ")
-        print(f"{rank}. [{point.score:.3f}] {p['source']} - page {p['page']}, chunk {p['chunk']}")
+        print(f"{rank}. [{point.score:.3f}] {p['source']} — page {p['page']}, chunk {p['chunk']}")
         print(f"   {snippet}...\n")
-
-
+ 
+ 
 if __name__ == "__main__":
-    query = " ".join(sys.argv[1:]) or "What is this document about?"
-    search(query)
+    main()
