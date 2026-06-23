@@ -1,15 +1,25 @@
 [project]
 name = "just-a-rag"
 version = "0.1.0"
-description = "Add your description here"
+description = "A retrieval-augmented generation system over PDF documents"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dependencies = [
-    "dotenv>=0.9.9",
     "gradio>=6.19.0",
     "litellm>=1.89.3",
     "pymupdf>=1.27.2.3",
+    "python-dotenv>=1.0.0",
     "qdrant-client>=1.18.0",
     "sentence-transformers>=5.6.0",
-    "uuid>=1.30",
+    "torch>=2.2.0",
 ]
+
+# Force torch to resolve only from PyTorch's CPU index
+# this prevents pulling the multi-GB CUDA build.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

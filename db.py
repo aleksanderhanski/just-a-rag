@@ -1,8 +1,9 @@
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams
+import os
 
 # shared config
-QDRANT_URL = "http://localhost:6333"
+QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 COLLECTION_NAME = "documents"
 MODEL_NAME = "BAAI/bge-base-en-v1.5"
 VECTOR_SIZE = 768

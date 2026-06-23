@@ -7,3 +7,22 @@ services:
     volumes:
       - ./qdrant_storage:/qdrant/storage
     restart: unless-stopped
+
+  app:
+    build: .
+    container_name: rag-app
+    ports:
+      - "7860:7860"
+    environment:
+      - QDRANT_URL=http://qdrant:6333
+    env_file:
+      - .env
+    depends_on:
+      - qdrant
+    volumes:
+      - hf_cache:/root/.cache/huggingface
+      - ./data:/app/data 
+    restart: unless-stopped
+
+volumes:
+  hf_cache:
