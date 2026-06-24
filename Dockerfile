@@ -13,6 +13,8 @@ RUN uv sync --frozen --no-install-project
 
 COPY . .
 
+WORKDIR /app/src
+
 EXPOSE 7860
 
-CMD [".venv/bin/python", "app.py"]
+CMD ["uv", "run", "app.py"]
