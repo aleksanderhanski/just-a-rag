@@ -17,8 +17,9 @@ from qdrant_client.http.models import PointStruct
 from sentence_transformers import SentenceTransformer
 
 from db import client, COLLECTION_NAME, MODEL_NAME, ensure_collection, reset_collection
+import os
 
-DATA_DIR = Path("data")
+DATA_DIR = Path(os.getenv("DATA_DIR", "../data"))
 CHUNK_SIZE = 800   # characters; ~150-200 tokens, comfortably under bge-base's 512-token limit
 
 

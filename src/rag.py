@@ -35,8 +35,8 @@ def answer(question, limit=5):
 
     context = build_context(points)
     system_prompt = (
-        "You are a helpful assistant. Answer the question using ONLY the context "
-        "below. If the context doesn't contain the answer, say so plainly. Cite the "
+        "You are a helpful assistant. Answer the question using ONLY the given context."
+        "If the context doesn't contain the answer, say so plainly. Cite the "
         "sources you use by their bracket numbers, e.g. [1], [2]."
     )
     user_prompt = f"Context:\n{context}\n\nQuestion: {question}"
